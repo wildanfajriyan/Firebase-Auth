@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/AuthService.dart';
 import 'RegisterPage.dart';
+import 'ProfilePage.dart';
 
 class LoginPage extends StatelessWidget {
+  final _emailController = TextEditingController();
+  final _passController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,7 +17,7 @@ class LoginPage extends StatelessWidget {
               delegate: SliverChildListDelegate([
                 // Tulisa Hello
                 Row(
-                  children: <Widget>[
+                  children: const <Widget>[
                     Text(
                       'Hello.',
                       style: TextStyle(
@@ -32,7 +37,7 @@ class LoginPage extends StatelessWidget {
                     SizedBox(width: 40),
                   ],
                 ), // Tulisan Welcome back
-                Text(
+                const Text(
                   'Welcome back',
                   style: TextStyle(
                       color: Colors.blue,
@@ -51,7 +56,7 @@ class LoginPage extends StatelessWidget {
                       ),
                       SizedBox(height: 8),
                       TextFormField(
-                        // controller: _emailController,
+                        controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                           hintText: 'Email',
@@ -80,7 +85,7 @@ class LoginPage extends StatelessWidget {
                       ),
                       SizedBox(height: 8),
                       TextFormField(
-                        // controller: _passController,
+                        controller: _passController,
                         obscureText: true,
                         decoration: InputDecoration(
                           hintText: 'Password',
@@ -102,11 +107,42 @@ class LoginPage extends StatelessWidget {
                               EdgeInsets.symmetric(vertical: 4, horizontal: 16),
                         ),
                       ),
+
+                      // Login Button
                       SizedBox(height: 20),
                       Container(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            SignInSignUpResult result =
+                                await AuthService.signInWithEmail(
+                                    email: _emailController.text,
+                                    pass: _passController.text);
+                            if (!context.mounted) return;
+                            if (result.user != null) {
+                              // Go to Profile Page
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ProfilePage(user: result.user)));
+                            } else {
+                              // Show dialog
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                          title: const Text('Error'),
+                                          content: Text(result.message),
+                                          actions: <Widget>[
+                                            FloatingActionButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('OK'),
+                                            )
+                                          ]));
+                            }
+                          },
                           child: Text(
                             'Login',
                             style: TextStyle(color: Colors.white),
@@ -124,66 +160,6 @@ class LoginPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(height: 20),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Divider(
-                        thickness: 1,
-                        color: Colors.blue,
-                      ),
-                    ),
-                    SizedBox(width: 20),
-                    Text(
-                      'OR',
-                      style: TextStyle(color: Colors.blue),
-                    ),
-                    SizedBox(width: 20),
-                    Expanded(
-                      child: Divider(
-                        thickness: 1,
-                        color: Colors.blue,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20),
-                Container(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    child: Text(
-                      'Login with Google',
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      primary: Colors.blue,
-                      elevation: 0,
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 8),
-                Container(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    child: Text(
-                      'Login with Facebook',
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      primary: Colors.blue,
-                      elevation: 0,
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 30),
               ]),
             ),
             SliverFillRemaining(

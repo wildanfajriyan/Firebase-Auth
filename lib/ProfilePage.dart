@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_application_2/AuthService.dart';
+import 'package:flutter_application_2/LoginPage.dart';
 
 class ProfilePage extends StatelessWidget {
-  final FirebaseUser user;
+  final UserCredential user;
 
   ProfilePage({required this.user});
 
@@ -58,7 +60,7 @@ class ProfilePage extends StatelessWidget {
                         // controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
-                          hintText: '${user.uid}',
+                          hintText: '${user.user?.uid}',
                           fillColor: Colors.white,
                           filled: true,
                           focusedBorder: OutlineInputBorder(
@@ -87,7 +89,7 @@ class ProfilePage extends StatelessWidget {
                         // controller: _passController,
                         obscureText: true,
                         decoration: InputDecoration(
-                          hintText: '${user.displayName}',
+                          hintText: '${user.user?.displayName}',
                           fillColor: Colors.white,
                           filled: true,
                           focusedBorder: OutlineInputBorder(
@@ -116,7 +118,7 @@ class ProfilePage extends StatelessWidget {
                         // controller: _passController,
                         obscureText: true,
                         decoration: InputDecoration(
-                          hintText: '${user.email}',
+                          hintText: '${user.user?.email}',
                           fillColor: Colors.white,
                           filled: true,
                           focusedBorder: OutlineInputBorder(
@@ -133,6 +135,33 @@ class ProfilePage extends StatelessWidget {
                           ),
                           contentPadding:
                               EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                        ),
+                      ),
+
+                      // Logout Button
+                      SizedBox(height: 20),
+                      Container(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            await AuthService.signOut();
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage()));
+                          },
+                          child: Text(
+                            'Logout',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            primary: Color(0xFF4f4f4f),
+                            elevation: 0,
+                            padding: EdgeInsets.symmetric(vertical: 16),
+                          ),
                         ),
                       ),
                     ],

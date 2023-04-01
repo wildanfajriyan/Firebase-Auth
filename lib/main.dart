@@ -1,7 +1,15 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'LoginPage.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+      options: const FirebaseOptions(
+          apiKey: 'AIzaSyCuVsHmWdDI5xpe3c0InpEbGsECREZ1mYg ',
+          appId: '1:759512376776:android:99b13b4e4d200095b9ccfd',
+          messagingSenderId: '759512376776',
+          projectId: 'flutter-firebase-app-a11e1'));
   runApp(const MyApp());
 }
 

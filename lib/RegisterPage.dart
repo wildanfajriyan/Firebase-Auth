@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/LoginPage.dart';
 import 'AuthService.dart';
 import 'ProfilePage.dart';
 
@@ -106,35 +107,8 @@ class RegisterPage extends StatelessWidget {
                               EdgeInsets.symmetric(vertical: 4, horizontal: 16),
                         ),
                       ),
-                      SizedBox(height: 16),
-                      Text(
-                        'Confirm Password',
-                        style: TextStyle(color: Colors.blue),
-                      ),
-                      SizedBox(height: 8),
-                      TextFormField(
-                        controller: _passController,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          hintText: 'Confirm Password',
-                          fillColor: Colors.white,
-                          filled: true,
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(
-                              color: Colors.white,
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(
-                              color: Colors.white,
-                            ),
-                          ),
-                          contentPadding:
-                              EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-                        ),
-                      ),
+
+                      // Register Button
                       SizedBox(height: 20),
                       Container(
                         width: double.infinity,
@@ -188,6 +162,35 @@ class RegisterPage extends StatelessWidget {
                 ),
               ]),
             ),
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Container(
+                alignment: Alignment.bottomCenter,
+                margin: EdgeInsets.only(bottom: 20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      'have account ?',
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginPage()));
+                      },
+                      child: Text(
+                        'Login',
+                        style: TextStyle(
+                            color: Colors.blue, fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),
